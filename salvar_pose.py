@@ -72,6 +72,12 @@ class PoseEditor:
         self.entry_name = tk.Entry(side_frame, textvariable=self.pose_name_var)
         self.entry_name.pack(fill="x", pady=(0,10))
 
+        tk.Label(side_frame, text="Mensagem MQTT:").pack(anchor="w")
+        self.pose_msg_var = tk.StringVar()
+        self.entry_msg = tk.Entry(side_frame, textvariable=self.pose_msg_var)
+        self.entry_msg.pack(fill="x", pady=(0,10))
+
+
         tk.Button(side_frame, text="Salvar Pose", command=self.save_pose).pack(fill="x", pady=5)
         tk.Button(side_frame, text="Resetar Pose", command=self.reset_pose).pack(fill="x", pady=5)
         tk.Button(side_frame, text="Desfazer Último Movimento", command=self.undo).pack(fill="x", pady=5)
@@ -183,9 +189,14 @@ class PoseEditor:
 
     def save_pose(self):
         pose_name = self.pose_name_var.get().strip()
+        pose_msg = self.pose_msg_var.get().strip()
         if not pose_name:
             self.show_feedback("❌ Por favor, digite um nome para a pose.", "red")
             return
+        if not pose_msg:
+            self.show_feedback("❌ Por favor, digite uma mensagem MQTT.", "red")
+            return
+
 
         base_pose = {}
         for idx, oid in self.points.items():
@@ -203,7 +214,10 @@ class PoseEditor:
             all_poses = {}
 
         normalized_variations = [normalize_pose(p) for p in pose_variations]
-        all_poses[pose_name] = normalized_variations
+        all_poses[pose_name] = {
+            "variations": normalized_variations,
+            "message": pose_msg
+        }
 
         with open(filename, "wb") as f:
             pickle.dump(all_poses, f)
@@ -275,7 +289,11 @@ class PoseEditor:
             with open(filename, "rb") as f:
                 all_poses = pickle.load(f)
             if pose_name in all_poses:
-                variations = all_poses[pose_name]
+                data = all_poses[pose_name]
+                variations = data["variations"]
+                msg = data.get("message", "")
+                self.pose_msg_var.set(msg)
+
                 avg_pose = {}
                 for idx in GENERIC_POSE.keys():
                     xs = [p[idx][0] for p in variations]

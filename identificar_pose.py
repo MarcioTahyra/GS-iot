@@ -37,14 +37,18 @@ def compare_poses(p1, p2):
             total += np.linalg.norm(np.array(p1[k]) - np.array(p2[k]))
     return total
 
-# Carrega poses salvas
 with open(POSE_FILE, "rb") as f:
     raw_poses = pickle.load(f)
 
-# Normaliza poses salvas
 normalized_poses = {}
-for name, variations in raw_poses.items():
+pose_messages = {}
+
+for name, data in raw_poses.items():
+    variations = data["variations"] if isinstance(data, dict) else data
     normalized_poses[name] = [normalize_pose(p) for p in variations]
+    if isinstance(data, dict) and "message" in data:
+        pose_messages[name] = data["message"]
+
 
 def process_frame(frame, threshold):
     mensagem = ""
@@ -68,14 +72,7 @@ def process_frame(frame, threshold):
         if best_pose[1] < threshold:
             main_label = f"✅ Pose: {best_pose[0]} ({best_pose[1]:.2f})"
             color = (0, 255, 0)
-            if best_pose[0] == 'braco_2_cima':
-                mensagem = f"Pose: 2 braços erguidos - Está tudo bem!"
-            elif best_pose[0] == 'braco_d_cima':
-                mensagem = f"Pose: Braço direito erquido - Preciso de ajuda! [compartilhar localização]"
-            elif best_pose[0] == 'braco_e_cima':
-                mensagem = f"Pose: Braço esquerdo erguido - Ligar p/ Emergência!"
-            elif best_pose[0] == 'neutro':
-                mensagem = f"Pose: Neutra - Posição neutra..."
+            mensagem = pose_messages.get(best_pose[0], f"Pose: {best_pose[0]}")
             client.publish(topic, mensagem)
 
         else:
@@ -100,7 +97,6 @@ def run_pose_detection():
         if not success:
             break
 
-        # Rotaciona 90 graus no sentido horário
         frame = cv2.rotate(frame, cv2.ROTATE_90_CLOCKWISE)
 
         processed = process_frame(frame, threshold)
@@ -117,7 +113,7 @@ root.title("Reconhecimento de Pose - Normalizado")
 
 tk.Label(root, text="Limiar (distância média):").pack()
 slider = tk.Scale(root, from_=1, to=10, resolution=0.5, orient="horizontal")
-slider.set(0.2)
+slider.set(1)
 slider.pack()
 
 tk.Button(root, text="Iniciar com Webcam", command=run_pose_detection).pack(pady=10)
