@@ -4,7 +4,6 @@ import mediapipe as mp
 import numpy as np
 import pickle
 import paho.mqtt.client as mqtt
-import time
 
 broker = "broker.hivemq.com"
 port = 1883
@@ -111,7 +110,7 @@ def run_pose_detection():
 root = tk.Tk()
 root.title("Reconhecimento de Pose - Normalizado")
 
-tk.Label(root, text="Limiar (distância média):").pack()
+tk.Label(root, text="Tolerância:").pack()
 slider = tk.Scale(root, from_=1, to=10, resolution=0.5, orient="horizontal")
 slider.set(1)
 slider.pack()
