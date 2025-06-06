@@ -50,3 +50,6 @@ Desenvolvemos uma **aplicação em Python** utilizando a biblioteca **MediaPipe*
 - Inscreva-se no tópico: `GS/3ESA/iot` para receber as mensagens dos gestos detectados.
 
 ![image](https://github.com/user-attachments/assets/f7484a2c-4713-451a-b6e2-fbbe47b156c6)
+
+### Link Vídeo
+- https://youtu.be/ZxO10vcJWTw
