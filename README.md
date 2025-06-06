@@ -7,7 +7,7 @@
 
 ---
 
-## 🧠 O Problema
+## O Problema
 
 A falta de energia elétrica pode gerar situações críticas em diversos contextos, desde lares comuns até hospitais.
 
@@ -18,7 +18,7 @@ Pessoas com mobilidade reduzida ou deficiência visual enfrentam riscos ainda ma
 
 ---
 
-## 💡 A Solução
+## A Solução
 
 Desenvolvemos uma **aplicação em Python** utilizando a biblioteca **MediaPipe** para **reconhecimento de gestos corporais específicos**, mesmo em ambientes com pouca ou nenhuma iluminação.
 
@@ -27,9 +27,9 @@ Desenvolvemos uma **aplicação em Python** utilizando a biblioteca **MediaPipe*
 
 ---
 
-## ⚙️ Como Usar
+## Como Usar
 
-### 🔹 1º Passo: Cadastrar Poses e Mensagens
+### 1º Passo: Cadastrar Poses e Mensagens
 - **Arraste e solte** os pontos azuis para salvar as poses desejadas.
 - Associe uma **mensagem personalizada** a cada gesto salvo.
 
@@ -37,7 +37,7 @@ Desenvolvemos uma **aplicação em Python** utilizando a biblioteca **MediaPipe*
 
 ---
 
-### 🔹 2º Passo: Rodar o Identificador de Poses
+###  2º Passo: Rodar o Identificador de Poses
 - Execute o sistema de reconhecimento.
 - Ajuste a **Tolerância** usando o **slider** conforme necessário para maior precisão.
 
@@ -45,7 +45,7 @@ Desenvolvemos uma **aplicação em Python** utilizando a biblioteca **MediaPipe*
 
 ---
 
-### 🔹 3º Passo: Monitoramento via WebSocket
+### 3º Passo: Monitoramento via WebSocket
 - Acesse: [HiveMQ WebSocket Client](https://www.hivemq.com/demos/websocket-client/)
 - Inscreva-se no tópico: `GS/3ESA/iot` para receber as mensagens dos gestos detectados.
 
